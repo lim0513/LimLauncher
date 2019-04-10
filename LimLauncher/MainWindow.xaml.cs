@@ -24,5 +24,8 @@ namespace LimLauncher
         {
             InitializeComponent();
         }
+
+        private void Test()
+        { }
     }
 }
