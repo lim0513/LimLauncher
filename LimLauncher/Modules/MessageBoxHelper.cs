@@ -128,6 +128,14 @@ namespace LimLauncher.Modules
         public static ModernMessageboxResult ShowOKCancelMessage(string Message, string Title) => ShowMessageBox(Message, Title, QModernMessageBoxButtons.OkCancel, ModernMessageboxIcons.Question);
 
         /// <summary>
+        /// 是否消息框
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="Title"></param>
+        /// <returns></returns>
+        public static ModernMessageboxResult ShowYesNoMessage(string Message, string Title) => ShowMessageBox(Message, Title, QModernMessageBoxButtons.YesNo, ModernMessageboxIcons.Question);
+
+        /// <summary>
         /// 等待时处理
         /// </summary>
         /// <param name="ParentWindow">父窗体</param>

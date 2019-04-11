@@ -59,7 +59,7 @@ namespace LimLauncher
 
             if (e.Key == Key.Delete && ((DataGrid)sender).SelectedItem != null && !((DataGrid)sender).IsEditing())
             {
-                if (MessageBoxHelper.ShowOKCancelMessage("", "删除确认") != ModernMessageBoxLib.ModernMessageboxResult.Button1)
+                if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") != ModernMessageBoxLib.ModernMessageboxResult.Button1)
                 {
                     e.Handled = true;
                 }

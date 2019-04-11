@@ -18,7 +18,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="48" Height="48"/>
+                            <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="36" Height="36"/>
                             <TextBlock Grid.Row="1" Text="{Binding FileName}" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </DataTemplate>

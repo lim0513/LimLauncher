@@ -23,7 +23,7 @@
         <Grid Grid.Row="0" Grid.Column="0">
             <ScrollViewer x:Name="scv" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
                 <StackPanel CanVerticallyScroll="True">
-                    <DataGrid HeadersVisibility="None" SelectionMode="Single" SelectionUnit="Cell" Selector.IsSelected="True" CellStyle="{StaticResource MaterialDesignDataGridCellModify}"
+                    <DataGrid HeadersVisibility="None" SelectionMode="Single" CellStyle="{StaticResource MaterialDesignDataGridCellModify}"
                       RowHeight="43.51" ItemsSource="{Binding Groups}" RowHeaderWidth="0" VerticalAlignment="Top"
                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
                       CellEditEnding="DataGrid_CellEditEnding" PreviewKeyDown="DataGrid_PreviewKeyDown">
