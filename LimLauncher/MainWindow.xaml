@@ -8,23 +8,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}"
-        EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="False" 
+        EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True" 
         Title="LimLauncher" Height="450" Width="800">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
-            <Button>
-                <materialDesign:PackIcon Kind="Search" Width="20" Height="20" />
-            </Button>
-            <Menu Height="auto" Background="Transparent">
-                <MenuItem Height="30" Background="Transparent">
-                    <MenuItem.Header>
-                        <materialDesign:PackIcon Kind="Menu"/>
-                    </MenuItem.Header>
-                    <MenuItem Header="aaa"/>
-                    <MenuItem Header="aaa"/>
-                    <MenuItem Header="aaa"/>
-                </MenuItem>
-            </Menu>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
@@ -33,47 +20,27 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" Grid.Column="0">
-            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListBox.Resources>
-                    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignToolToggleFlatListBox}">
-                        <Setter Property="ItemsPanel">
-                            <Setter.Value>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.Resources>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignToolToggleListBoxItem}">
-                        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Path=ActualWidth}"/>
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="Background" Value="{StaticResource WindowTitleColorBrush}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <TextBlock>Apps</TextBlock>
-                <TextBlock>Documents</TextBlock>
-                <TextBlock>New Group</TextBlock>
-                <TextBlock>New Group</TextBlock>
-                <TextBlock>New Group</TextBlock>
-                <TextBlock>New Group</TextBlock>
-            </ListBox>
-        </DockPanel>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <ScrollViewer x:Name="scv" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
+                <StackPanel CanVerticallyScroll="True">
+                    <DataGrid HeadersVisibility="None" SelectionMode="Single" SelectionUnit="Cell" Selector.IsSelected="True" CellStyle="{StaticResource MaterialDesignDataGridCellModify}"
+                      RowHeight="43.51" ItemsSource="{Binding Groups}" RowHeaderWidth="0" VerticalAlignment="Top"
+                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
+                      CellEditEnding="DataGrid_CellEditEnding" PreviewKeyDown="DataGrid_PreviewKeyDown">
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridTextColumn EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" Width="*" Binding="{Binding Path=GroupName}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="BtnAddGroup_Click" Style="{StaticResource MaterialDesignFloatingActionLightButton}" Margin="10" Height="24" Width="24" >
+                        <materialDesign:PackIcon Kind="Plus"/>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
         <GridSplitter Grid.Row="0" Grid.Column="1" Width="3" Margin="2,0,2,0"
                       VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         <DockPanel Grid.Row="0" Grid.Column="2">
-            <ListView>
-                <ListViewItem>E00</ListViewItem>
-                <ListViewItem>F00</ListViewItem>
-                <ListViewItem>G00</ListViewItem>
-                <ListViewItem>H00</ListViewItem>
-                <ListViewItem>I00</ListViewItem>
-                <ListViewItem>J00</ListViewItem>
-                <ListViewItem>K00</ListViewItem>
-                <ListViewItem>L00</ListViewItem>
-            </ListView>
+            <local:FileListView/>
         </DockPanel>
     </Grid>
 </Controls:MetroWindow>

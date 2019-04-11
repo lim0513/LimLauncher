@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:LimLauncher"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,8 +13,8 @@
                 <!-- MahApps -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                
-                
+
+
 
                 <!-- Material Design -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
@@ -45,9 +46,12 @@
             <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
             <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />
 
+            <SolidColorBrush x:Key="MaterialDesignPaper" Color="{DynamicResource Primary700}"/>
+
+
             <Style TargetType="{x:Type controls:MetroWindow}" x:Key="MetroWindow" BasedOn="{StaticResource {x:Type controls:MetroWindow}}">
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
-                <Setter Property="Background" Value="{DynamicResource WindowTitleColorBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
                 <Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
@@ -74,6 +78,33 @@
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Opacity" Value="1" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="MaterialDesignDataGridCellModify" TargetType="{x:Type DataGridCell}">
+                <!--Setter Property="TextBlock.FontSize" Value="13" /-->
+                <Setter Property="Padding" Value="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:DataGridAssist.CellPadding)}" />
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesignSelection}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignTextBoxBorder}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value=".56"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
