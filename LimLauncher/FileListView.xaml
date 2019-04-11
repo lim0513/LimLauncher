@@ -8,26 +8,83 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
 
-        <Style x:Key="ListBoxItemBigIcon" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="ContentTemplate">
+
+        <Style x:Key="ListBoxBigIcon" TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}" >
+            <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <DataTemplate>
-                        <Grid Height="auto" Width="64">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="36" Height="36"/>
-                            <TextBlock Grid.Row="1" Text="{Binding FileName}" TextWrapping="Wrap" TextAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Height="auto" Width="64" Margin="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="40" Height="40" Margin="0,0,0,2"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding FileName}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="64" TextAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="1"/>
+                    </Style>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Margin" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate >
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}" x:Key="ListBoxBigIcon" >
-            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemBigIcon}" />
+
+        <Style x:Key="ListBoxStretching" TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}" >
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Margin="0" Height="54">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="195"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="50" Height="40" Margin="0,0,2,0"/>
+                                        <StackPanel Grid.Column="1">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="LineHeight" Value="20"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+                                            <TextBlock Text="{Binding FileName}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="36" TextAlignment="Left"/>
+                                            <TextBlock Text="{Binding FileTypeDescription}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
+                                            <TextBlock Text="{Binding FileSize}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
+                                        </StackPanel>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="1"/>
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="打开(_O)" />
+                                    <MenuItem Header="删除(_D)" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
             <Setter Property="ItemsPanel">
                 <Setter.Value>
@@ -39,5 +96,12 @@
         </Style>
 
     </UserControl.Resources>
-    <ListBox SelectionMode="Single" Margin="5" ItemsSource="{Binding Files}" Style="{StaticResource ListBoxBigIcon}" />
+    <ListBox x:Name="lbFiles" SelectionMode="Extended" Margin="5" ItemsSource="{Binding Files}" Style="{StaticResource ListBoxBigIcon}">
+        <ListBox.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="大图标(_R)" Click="MIBigIcon_Click" />
+                <MenuItem Header="平铺(_S)" Click="MIStretching_Click" />
+            </ContextMenu>
+        </ListBox.ContextMenu>
+    </ListBox>
 </UserControl>

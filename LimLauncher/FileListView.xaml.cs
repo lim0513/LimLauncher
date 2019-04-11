@@ -23,6 +23,7 @@ namespace LimLauncher
     public partial class FileListView : UserControl
     {
         public ObservableCollection<ShortcutInfo> Files { get; set; }
+
         public FileListView()
         {
             InitializeComponent();
@@ -43,6 +44,22 @@ namespace LimLauncher
         {
             this.Files = Files;
             this.DataContext = this;
+        }
+
+
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var file = ((ListBoxItem)sender).Content;
+        }
+
+        private void MIBigIcon_Click(object sender, RoutedEventArgs e)
+        {
+            lbFiles.Style = (Style)this.FindResource("ListBoxBigIcon");
+        }
+
+        private void MIStretching_Click(object sender, RoutedEventArgs e)
+        {
+            lbFiles.Style = (Style)this.FindResource("ListBoxStretching");
         }
     }
 }

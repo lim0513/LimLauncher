@@ -25,5 +25,9 @@ namespace LimLauncher.Entities
         /// 文件图标
         /// </summary>
         public ImageSource FileIcon { get { return IconManager.FindIconForFilename(FileFullPath, true); } }
+
+        public string FileSize { get { return Common.GetString(new System.IO.FileInfo(FileFullPath).Length); } }
+
+        public string FileTypeDescription { get { return Common.GetFileTypeDescription(FileFullPath); } }
     }
 }
