@@ -65,5 +65,8 @@ namespace LimLauncher
                 }
             }
         }
+
+        private void Test()
+        { }
     }
 }
