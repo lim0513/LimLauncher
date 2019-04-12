@@ -184,10 +184,7 @@ namespace LimLauncher
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBoxHelper.ShowYesNoMessage("退出前要不要再保存一次配置文件？", "退出确认") == ModernMessageBoxLib.ModernMessageboxResult.Button1)
-            {
-                Save();
-            }
+            Save();
         }
     }
 }
