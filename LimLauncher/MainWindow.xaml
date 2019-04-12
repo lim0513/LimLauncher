@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LimLauncher" Icon="/favicon.ico"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" Closing="MetroWindow_Closing"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
         Title="LimLauncher" Height="450" Width="800">
