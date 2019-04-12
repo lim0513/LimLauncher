@@ -7,11 +7,24 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        mc:Ignorable="d" Style="{StaticResource MetroWindow}"
+        mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True" 
         Title="LimLauncher" Height="450" Width="800">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
+            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" ToolTip="最前" Click="ToggleButton_Click" >
+                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <RotateTransform Angle="45" />
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon Kind="Pin" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+            <Button Click="BtnSave_Click" ToolTip="保存">
+                <materialDesign:PackIcon Kind="ContentSaveSettings" />
+            </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
@@ -21,12 +34,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
-            <ScrollViewer x:Name="scv" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
+            <ScrollViewer x:Name="scv" VerticalScrollBarVisibility="Auto" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
                 <StackPanel CanVerticallyScroll="True">
-                    <DataGrid HeadersVisibility="None" SelectionMode="Single" CellStyle="{StaticResource MaterialDesignDataGridCellModify}"
+                    <DataGrid x:Name="dg_Groups" HeadersVisibility="None" SelectionMode="Single" CellStyle="{StaticResource MaterialDesignDataGridCellModify}" SelectionChanged="DataGrid_SelectionChanged"
                       RowHeight="43.51" ItemsSource="{Binding Groups}" RowHeaderWidth="0" VerticalAlignment="Top"
                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
-                      CellEditEnding="DataGrid_CellEditEnding" PreviewKeyDown="DataGrid_PreviewKeyDown">
+                      PreparingCellForEdit="DataGrid_PreparingCellForEdit" CellEditEnding="DataGrid_CellEditEnding" PreviewKeyDown="DataGrid_PreviewKeyDown">
                         <DataGrid.Columns>
                             <materialDesign:MaterialDataGridTextColumn EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" Width="*" Binding="{Binding Path=GroupName}" />
                         </DataGrid.Columns>
@@ -40,7 +53,7 @@
         <GridSplitter Grid.Row="0" Grid.Column="1" Width="3" Margin="2,0,2,0"
                       VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
         <DockPanel Grid.Row="0" Grid.Column="2">
-            <local:FileListView/>
+            <local:FileListView x:Name="FileView"/>
         </DockPanel>
     </Grid>
 </Controls:MetroWindow>

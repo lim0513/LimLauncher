@@ -10,8 +10,14 @@ namespace LimLauncher.Entities
     [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class GroupInfo
     {
+        public long ID { get; set; }
         public string GroupName { get; set; }
 
-        public ObservableCollection<ShortcutInfo> ListShortcutInfo { get; set; }
+        public GroupInfo()
+        {
+            ID = DateTime.Now.Ticks;
+        }
+
+        public ObservableCollection<ShortcutInfo> ListShortcutInfo { get; set; } = new ObservableCollection<ShortcutInfo>();
     }
 }
