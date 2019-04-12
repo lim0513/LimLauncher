@@ -118,6 +118,7 @@
     <Compile Include="Modules\Common.cs" />
     <Compile Include="Modules\IconManager.cs" />
     <Compile Include="Modules\MessageBoxHelper.cs" />
+    <Compile Include="Modules\ShellLink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -72,16 +73,34 @@ namespace LimLauncher
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        [Obsolete]
         private void LbFiles_Drop(object sender, DragEventArgs e)
         {
             try
             {
                 if (GroupInfo != null)
                 {
-                    foreach (string fileName in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
+                    foreach (string fileNameBase in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
                     {
-                        if (Files.Where(t => t.FileFullPath == fileName).Count() == 0)
-                            Files.Add(new ShortcutInfo() { FileFullPath = fileName });
+                        string filePath = fileNameBase;
+                        string fileReName = null;
+                        if (System.IO.Path.GetExtension(filePath) == ".lnk")
+                        {
+                            IShellLink vShellLink = (IShellLink)new ShellLink();
+                            UCOMIPersistFile vPersistFile = vShellLink as UCOMIPersistFile;
+                            vPersistFile.Load(filePath, 0);
+                            StringBuilder vStringBuilder = new StringBuilder(260);
+                            WIN32_FIND_DATA vWIN32_FIND_DATA;
+                            vShellLink.GetPath(vStringBuilder, vStringBuilder.Capacity, out vWIN32_FIND_DATA, SLGP_FLAGS.SLGP_RAWPATH);
+                            filePath = vStringBuilder.ToString();
+                            fileReName = System.IO.Path.GetFileNameWithoutExtension(fileNameBase);
+                        }
+                        if (Files.Where(t => t.FileFullPath == filePath).Count() == 0)
+                            Files.Add(new ShortcutInfo()
+                            {
+                                FileFullPath = filePath,
+                                FileRename = fileReName,
+                            });
                     }
                 }
             }
