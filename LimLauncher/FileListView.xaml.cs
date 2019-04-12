@@ -1,5 +1,6 @@
 ﻿using LimLauncher.Entities;
 using LimLauncher.Modules;
+using ModernMessageBoxLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -79,7 +80,8 @@ namespace LimLauncher
                 {
                     foreach (string fileName in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
                     {
-                        Files.Add(new ShortcutInfo() { FileFullPath = fileName });
+                        if (Files.Where(t => t.FileFullPath == fileName).Count() == 0)
+                            Files.Add(new ShortcutInfo() { FileFullPath = fileName });
                     }
                 }
             }
@@ -120,9 +122,16 @@ namespace LimLauncher
         {
             try
             {
-                if (e.Key == Key.Delete && ((ListBox)sender).SelectedItem != null)
+                if (((ListBox)sender).SelectedItem != null)
                 {
-                    Files.Remove(((ListBox)sender).SelectedValue as ShortcutInfo);
+                    if (e.Key == Key.Delete)
+                    {
+                        Files.Remove(((ListBox)sender).SelectedValue as ShortcutInfo);
+                    }
+                    else if (e.Key == Key.F2)
+                    {
+                        Rename(((ListBox)sender).SelectedValue as ShortcutInfo);
+                    }
                 }
             }
             catch (Exception ex)
@@ -140,7 +149,11 @@ namespace LimLauncher
         {
             try
             {
-                Files.Remove((sender as MenuItem).DataContext as ShortcutInfo);
+                foreach (ShortcutInfo File in lbFiles.SelectedItems)
+                {
+                    Files.Remove(File);
+                }
+
             }
             catch (Exception ex)
             {
@@ -155,8 +168,28 @@ namespace LimLauncher
         /// <param name="e"></param>
         private void MIOpenFile_Click(object sender, RoutedEventArgs e)
         {
-            string strFileName = ((sender as MenuItem).DataContext as ShortcutInfo).FileFullPath;
-            StartFile(strFileName);
+            try
+            {
+                foreach (ShortcutInfo File in lbFiles.SelectedItems)
+                {
+                    StartFile(File.FileFullPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBoxHelper.ShowErrorMessage(ex);
+            }
+        }
+        private void MIRename_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Rename((sender as MenuItem).DataContext as ShortcutInfo);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxHelper.ShowErrorMessage(ex);
+            }
         }
         #endregion
 
@@ -186,6 +219,19 @@ namespace LimLauncher
                 }
                 catch { }
             }).Start();
+        }
+
+        private void Rename(ShortcutInfo shortcutInfo)
+        {
+            var msg = new ModernMessageBox("请设置一个用于显示的别名", "设置显示名", ModernMessageboxIcons.Question, "确定", "取消")
+            {
+                TextBoxText = shortcutInfo.FileRenameDisp,
+                TextBoxVisibility = Visibility.Visible,
+            };
+            msg.Owner = MessageBoxHelper.GlobalParentWindow;
+            msg.ShowDialog();
+            if (msg.Result == ModernMessageboxResult.Button1)
+                shortcutInfo.FileRename = msg.TextBoxText;
         }
         #endregion
     }

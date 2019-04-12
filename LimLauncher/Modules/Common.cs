@@ -72,7 +72,12 @@ namespace LimLauncher.Modules
         public static string GetFileTypeDescription(string fileNameOrExtension)
         {
             SHFILEINFO shfi;
-            if (IntPtr.Zero != SHGetFileInfo(
+            if (System.IO.Directory.Exists(fileNameOrExtension))
+            {
+                // 文件夹
+                return "文件夹";
+            }
+            else if (IntPtr.Zero != SHGetFileInfo(
                                 fileNameOrExtension,
                                 FILE_ATTRIBUTE_NORMAL,
                                 out shfi,

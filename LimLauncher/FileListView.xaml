@@ -9,6 +9,7 @@
     <UserControl.Resources>
 
         <ContextMenu x:Key="FileContextMenu">
+            <MenuItem Header="别名(_N)" Click="MIRename_Click" />
             <MenuItem Header="打开(_O)" Click="MIOpenFile_Click" />
             <MenuItem Header="删除(_D)" Click="MIDelFile_Click" />
         </ContextMenu>
@@ -28,7 +29,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="40" Height="40" Margin="0,0,0,2"/>
-                                        <TextBlock Grid.Row="1" Text="{Binding FileName}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="64" TextAlignment="Center"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding FileRenameDisp}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="64" TextAlignment="Center"/>
                                     </Grid>
                                 </DataTemplate>
                             </Setter.Value>
@@ -69,7 +70,7 @@
                                                     <Setter Property="LineHeight" Value="20"/>
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <TextBlock Text="{Binding FileName}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="36" TextAlignment="Left"/>
+                                            <TextBlock Text="{Binding FileRenameDisp}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="36" TextAlignment="Left"/>
                                             <TextBlock Text="{Binding FileTypeDescription}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
                                             <TextBlock Text="{Binding FileSize}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
                                         </StackPanel>
