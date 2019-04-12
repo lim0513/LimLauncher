@@ -168,10 +168,13 @@ namespace LimLauncher
         {
             try
             {
+                List<ShortcutInfo> toBeDelete = new List<ShortcutInfo>();
                 foreach (ShortcutInfo File in lbFiles.SelectedItems)
                 {
-                    Files.Remove(File);
+                    toBeDelete.Add(File);
                 }
+
+                toBeDelete.ForEach(File => Files.Remove(File));
 
             }
             catch (Exception ex)
