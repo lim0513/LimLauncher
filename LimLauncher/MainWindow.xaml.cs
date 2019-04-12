@@ -114,9 +114,13 @@ namespace LimLauncher
             {
                 if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") != ModernMessageBoxLib.ModernMessageboxResult.Button1)
                 {
-                    if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
                     e.Handled = true;
                 }
+                else
+                {
+                    if (Groups.Count == 1) FileView.SetFileList(AddNewGroup("默认分组"));
+                }
+
             }
         }
 
@@ -185,6 +189,16 @@ namespace LimLauncher
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Save();
+        }
+
+        private void MIDel_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") == ModernMessageBoxLib.ModernMessageboxResult.Button1)
+            {
+                Groups.Remove(((MenuItem)sender).DataContext as GroupInfo);
+                if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
+            }
+
         }
     }
 }

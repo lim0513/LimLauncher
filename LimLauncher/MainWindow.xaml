@@ -6,10 +6,70 @@
         xmlns:local="clr-namespace:LimLauncher" Icon="/favicon.ico"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" Closing="MetroWindow_Closing"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
         Title="LimLauncher" Height="450" Width="800">
+    <Controls:MetroWindow.Resources>
+        <Style xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" x:Key="ButtonWindowCommandsDropDownStyle" TargetType="Button" BasedOn="{StaticResource ButtonDropDownStyle}">
+            <Style.Resources>
+                <!-- override the dynamic resources -->
+                <SolidColorBrush x:Key="GrayBrush8" options:Freeze="True" Color="Transparent" />
+                <SolidColorBrush x:Key="GrayBrush5" options:Freeze="True" Color="Transparent" />
+                <!-- for IsEnabled == False -->
+                <SolidColorBrush x:Key="GrayBrush10" options:Freeze="True" Color="Transparent" />
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="DropDownButtonWindowCommandsStyle" TargetType="controls:DropDownButton" BasedOn="{StaticResource {x:Type controls:DropDownButton}}">
+            <Setter Property="Orientation" Value="Vertical" />
+            <Setter Property="ArrowVisibility" Value="Collapsed" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="ButtonStyle" Value="{DynamicResource ButtonWindowCommandsDropDownStyle}" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <ContextMenu x:Key="CellContextMenu">
+            <MenuItem Header="删除(_D)" Click="MIDel_Click" />
+        </ContextMenu>
+
+        <Style x:Key="MaterialDesignDataGridCellModify" TargetType="{x:Type DataGridCell}">
+            <Setter Property="ContextMenu" Value="{StaticResource CellContextMenu}"/>
+            <Setter Property="Padding" Value="{Binding RelativeSource={RelativeSource Self}, Path=(materialDesign:DataGridAssist.CellPadding)}" />
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                    <Setter Property="Background" Value="{DynamicResource MaterialDesignSelection}"/>
+                    <!--<Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignTextBoxBorder}"/>-->
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value=".56"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
             <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" ToolTip="最前" Click="ToggleButton_Click" >
