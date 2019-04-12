@@ -42,6 +42,8 @@ namespace LimLauncher
             }
             this.Height = Properties.Settings.Default.LastHeight;
             this.Width = Properties.Settings.Default.LastWidth;
+            this.Top = Properties.Settings.Default.LastTop;
+            this.Left = Properties.Settings.Default.LastLeft;
             tog_Topmost.IsChecked = Properties.Settings.Default.TopMost;
 
             this.DataContext = this;
@@ -203,6 +205,8 @@ namespace LimLauncher
             Properties.Settings.Default.LastHeight = this.Height;
             Properties.Settings.Default.LastWidth = this.Width;
             Properties.Settings.Default.TopMost = this.Topmost;
+            Properties.Settings.Default.LastTop = this.Top;
+            Properties.Settings.Default.LastLeft = this.Left;
             Properties.Settings.Default.Save();
         }
 

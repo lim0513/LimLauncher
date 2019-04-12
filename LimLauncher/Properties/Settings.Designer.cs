@@ -58,5 +58,29 @@ namespace LimLauncher.Properties {
                 this["TopMost"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double LastTop {
+            get {
+                return ((double)(this["LastTop"]));
+            }
+            set {
+                this["LastTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double LastLeft {
+            get {
+                return ((double)(this["LastLeft"]));
+            }
+            set {
+                this["LastLeft"] = value;
+            }
+        }
     }
 }
