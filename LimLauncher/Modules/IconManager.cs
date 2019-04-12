@@ -28,12 +28,8 @@ namespace LimLauncher.Modules
             var extension = Path.GetExtension(fileName);
             if (extension == null)
                 return null;
-            var cache = large ? _largeIconCache : _smallIconCache;
             ImageSource icon;
-            if (cache.TryGetValue(extension, out icon))
-                return icon;
             icon = IconReader.GetFileIcon(fileName, large ? IconReader.IconSize.Large : IconReader.IconSize.Small, false).ToImageSource();
-            cache.Add(extension, icon);
             return icon;
         }
         /// <summary>

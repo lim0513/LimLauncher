@@ -26,10 +26,19 @@ namespace LimLauncher.Entities
 
         public string FileRenameDisp { get { return string.IsNullOrWhiteSpace(FileRename) ? FileName : FileRename; } }
 
+        private ImageSource FileIconSave { get; set; }
         /// <summary>
         /// 文件图标
         /// </summary>
-        public ImageSource FileIcon { get { return IconManager.FindIconForFilename(FileFullPath, true); } }
+        public ImageSource FileIcon
+        {
+            get
+            {
+                if (FileIconSave == null)
+                    FileIconSave = IconManager.FindIconForFilename(FileFullPath, true);
+                return FileIconSave;
+            }
+        }
 
         public string FileSize { get { return System.IO.Directory.Exists(FileFullPath) ? "" : Common.GetString(new System.IO.FileInfo(FileFullPath).Length); } }
 
