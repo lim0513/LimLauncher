@@ -114,6 +114,7 @@ namespace LimLauncher
             {
                 if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") != ModernMessageBoxLib.ModernMessageboxResult.Button1)
                 {
+                    if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
                     e.Handled = true;
                 }
             }
@@ -129,10 +130,6 @@ namespace LimLauncher
             if (e.AddedItems.Count > 0)
             {
                 FileView.SetFileList((GroupInfo)e.AddedItems[0]);
-            }
-            else
-            {
-                FileView.SetFileList(AddNewGroup("默认分组"));
             }
         }
 
