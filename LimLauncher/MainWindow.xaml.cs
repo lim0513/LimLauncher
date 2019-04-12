@@ -40,6 +40,10 @@ namespace LimLauncher
                 Groups = new ObservableCollection<GroupInfo>();
                 AddNewGroup("默认分组");
             }
+            this.Height = Properties.Settings.Default.LastHeight;
+            this.Width = Properties.Settings.Default.LastWidth;
+            tog_Topmost.IsChecked = Properties.Settings.Default.TopMost;
+
             this.DataContext = this;
         }
 
@@ -154,7 +158,7 @@ namespace LimLauncher
         /// <param name="e"></param>
         private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Topmost = ((ToggleButton)sender).IsChecked == true;
+
         }
         #endregion
 
@@ -188,7 +192,16 @@ namespace LimLauncher
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            SaveSettings();
             Save();
+        }
+
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.LastHeight = this.Height;
+            Properties.Settings.Default.LastWidth = this.Width;
+            Properties.Settings.Default.TopMost = this.Topmost;
+            Properties.Settings.Default.Save();
         }
 
         private void MIDel_Click(object sender, RoutedEventArgs e)

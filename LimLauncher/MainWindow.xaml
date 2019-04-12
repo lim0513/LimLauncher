@@ -10,6 +10,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" Closing="MetroWindow_Closing"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
+        x:Name="MetroWindow"
         Title="LimLauncher" Height="450" Width="800">
     <Controls:MetroWindow.Resources>
         <Style xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" x:Key="ButtonWindowCommandsDropDownStyle" TargetType="Button" BasedOn="{StaticResource ButtonDropDownStyle}">
@@ -72,7 +73,7 @@
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
-            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" ToolTip="最前" Click="ToggleButton_Click" >
+            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" x:Name="tog_Topmost" ToolTip="置顶" IsChecked="{Binding Topmost,ElementName=MetroWindow,Mode=OneWayToSource}" Click="ToggleButton_Click" >
                 <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
                     <materialDesign:PackIcon.RenderTransform>
                         <RotateTransform Angle="45" />
@@ -82,9 +83,9 @@
                     <materialDesign:PackIcon Kind="Pin" />
                 </materialDesign:ToggleButtonAssist.OnContent>
             </ToggleButton>
-            <Button Click="BtnSave_Click" ToolTip="保存">
+            <!--<Button Click="BtnSave_Click" ToolTip="保存">
                 <materialDesign:PackIcon Kind="ContentSaveSettings" />
-            </Button>
+            </Button>-->
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
