@@ -73,7 +73,7 @@
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
-            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" x:Name="tog_Topmost" ToolTip="置顶" IsChecked="{Binding Topmost,ElementName=MetroWindow,Mode=OneWayToSource}" Click="ToggleButton_Click" >
+            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" x:Name="tog_Topmost" ToolTip="置顶" IsChecked="{Binding Topmost,ElementName=MetroWindow,Mode=OneWayToSource}">
                 <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
                     <materialDesign:PackIcon.RenderTransform>
                         <RotateTransform Angle="45" />

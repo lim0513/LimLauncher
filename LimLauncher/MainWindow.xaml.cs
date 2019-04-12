@@ -151,13 +151,21 @@ namespace LimLauncher
             OldCellValue = ((TextBox)e.EditingElement).Text;
         }
 
-        /// <summary>
-        /// 切换最前
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            SaveSettings();
+            Save();
+        }
+
+
+
+        private void MIDel_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") == ModernMessageBoxLib.ModernMessageboxResult.Button1)
+            {
+                Groups.Remove(((MenuItem)sender).DataContext as GroupInfo);
+                if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
+            }
 
         }
         #endregion
@@ -187,15 +195,9 @@ namespace LimLauncher
             System.IO.File.WriteAllText(JsonFile, strJson);
         }
 
-
-        #endregion
-
-        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            SaveSettings();
-            Save();
-        }
-
+        /// <summary>
+        /// 保存配置
+        /// </summary>
         private void SaveSettings()
         {
             Properties.Settings.Default.LastHeight = this.Height;
@@ -204,14 +206,7 @@ namespace LimLauncher
             Properties.Settings.Default.Save();
         }
 
-        private void MIDel_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") == ModernMessageBoxLib.ModernMessageboxResult.Button1)
-            {
-                Groups.Remove(((MenuItem)sender).DataContext as GroupInfo);
-                if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
-            }
+        #endregion
 
-        }
     }
 }
