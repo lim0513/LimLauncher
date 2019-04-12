@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LimLauncher"
+        xmlns:local="clr-namespace:LimLauncher" Icon="/favicon.ico"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
-        EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True" 
+        EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
         Title="LimLauncher" Height="450" Width="800">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
