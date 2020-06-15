@@ -7,7 +7,9 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" Closing="MetroWindow_Closing"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Closing="MetroWindow_Closing" StateChanged="MetroWindow_StateChanged"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
         x:Name="MetroWindow"
@@ -70,6 +72,35 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="FileMenuItems" TargetType="{x:Type MenuItem}" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <MenuItem Click="MenuItem_Click">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="20" Height="20" Source="{Binding FileIcon}" />
+                                    <ContentPresenter Margin="5,0" Content="{Binding FileName}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GroupMenuItems"  TargetType="{x:Type MenuItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <MenuItem Header="{Binding GroupName}" 
+                                  ItemsSource="{Binding ListShortcutInfo}"
+                                  ItemContainerStyle="{StaticResource FileMenuItems}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
@@ -94,6 +125,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <tb:TaskbarIcon x:Name="MyNotifyIcon" IconSource="/favicon.ico" TrayMouseDoubleClick="MyNotifyIcon_TrayMouseDoubleClick" >
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu ItemsSource="{Binding Groups}" ItemContainerStyle="{StaticResource GroupMenuItems}" />
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
         <Grid Grid.Row="0" Grid.Column="0">
             <ScrollViewer x:Name="scv" VerticalScrollBarVisibility="Auto" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
                 <StackPanel CanVerticallyScroll="True">

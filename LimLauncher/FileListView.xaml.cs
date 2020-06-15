@@ -45,8 +45,7 @@ namespace LimLauncher
         /// <param name="e"></param>
         private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string strFileName = (((ListBoxItem)sender).Content as ShortcutInfo).FileFullPath;
-            StartFile(strFileName);
+            (((ListBoxItem)sender).Content as ShortcutInfo).StartFile();
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace LimLauncher
             {
                 foreach (ShortcutInfo File in lbFiles.SelectedItems)
                 {
-                    StartFile(File.FileFullPath);
+                    File.StartFile();
                 }
             }
             catch (Exception ex)
@@ -226,22 +225,6 @@ namespace LimLauncher
             this.GroupInfo = group;
             this.Files = group?.ListShortcutInfo;
             this.DataContext = this;
-        }
-
-        /// <summary>
-        /// 打开文件
-        /// </summary>
-        /// <param name="FileName"></param>
-        private void StartFile(string FileName)
-        {
-            new System.Threading.Thread(() =>
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(FileName);
-                }
-                catch { }
-            }).Start();
         }
 
         private void Rename(ShortcutInfo shortcutInfo)

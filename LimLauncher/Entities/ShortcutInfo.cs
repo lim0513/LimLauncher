@@ -43,5 +43,21 @@ namespace LimLauncher.Entities
         public string FileSize { get { return System.IO.Directory.Exists(FileFullPath) ? "" : Common.GetString(new System.IO.FileInfo(FileFullPath).Length); } }
 
         public string FileTypeDescription { get { return Common.GetFileTypeDescription(FileFullPath); } }
+
+        /// <summary>
+        /// 打开文件
+        /// </summary>
+        /// <param name="FileName"></param>
+        public void StartFile()
+        {
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(FileFullPath);
+                }
+                catch { }
+            }).Start();
+        }
     }
 }

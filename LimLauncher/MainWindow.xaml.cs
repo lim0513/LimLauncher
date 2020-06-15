@@ -155,6 +155,7 @@ namespace LimLauncher
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            MyNotifyIcon.Dispose();
             SaveSettings();
             Save();
         }
@@ -212,5 +213,26 @@ namespace LimLauncher
 
         #endregion
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            (((FrameworkElement)sender).DataContext as ShortcutInfo).StartFile();
+        }
+
+        private void MyNotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.Activate();
+            }
+        }
+
+        private void MetroWindow_StateChanged(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = this.WindowState != WindowState.Minimized;
+        }
     }
 }
