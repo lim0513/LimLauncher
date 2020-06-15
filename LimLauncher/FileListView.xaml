@@ -32,7 +32,7 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <Image Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="40" Height="40" Margin="0,0,0,2"/>
+                                        <Image RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="40" Height="40" Margin="0,0,0,2"/>
                                         <TextBlock Grid.Row="1" Text="{Binding FileRenameDisp}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="64" TextAlignment="Center"/>
                                     </Grid>
                                 </DataTemplate>
@@ -68,7 +68,7 @@
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="195"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="50" Height="40" Margin="0,0,2,0"/>
+                                        <Image RenderOptions.BitmapScalingMode="HighQuality" Grid.Column="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="50" Height="40" Margin="0,0,2,0"/>
                                         <StackPanel Grid.Column="1">
                                             <StackPanel.Resources>
                                                 <Style TargetType="TextBlock">

@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:tb="http://www.hardcodet.net/taskbar" UseLayoutRounding="True"
         Closing="MetroWindow_Closing" StateChanged="MetroWindow_StateChanged"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
@@ -80,7 +80,7 @@
                         <MenuItem Click="MenuItem_Click">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="20" Height="20" Source="{Binding FileIcon}" />
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality"  Width="20" Height="20" Source="{Binding FileIcon}" />
                                     <ContentPresenter Margin="5,0" Content="{Binding FileName}" />
                                 </StackPanel>
                             </MenuItem.Header>
