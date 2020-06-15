@@ -4,6 +4,7 @@ using ModernMessageBoxLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -256,5 +257,55 @@ namespace LimLauncher
                 shortcutInfo.FileRename = msg.TextBoxText;
         }
         #endregion
+
+        private void MIOpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                foreach (ShortcutInfo File in lbFiles.SelectedItems)
+                {
+                    Process p = new Process();
+                    p.StartInfo.FileName = "Explorer.exe";
+                    p.StartInfo.Arguments = "/select," + File.FileFullPath;
+                    p.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBoxHelper.ShowErrorMessage(ex);
+            }
+        }
+
+        private void MIAdminRun_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShortcutInfo File in lbFiles.SelectedItems)
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.Verb = "runas";
+                startInfo.UseShellExecute = true;
+                //设置启动动作,确保以管理员身份运行
+                startInfo.FileName = File.FileFullPath;
+                try
+                {
+                    System.Diagnostics.Process.Start(startInfo);
+                }
+                catch
+                {
+                    return;
+                }
+            }
+
+        }
+
+        private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (lbFiles.SelectedItem != null)
+            {
+                (((FrameworkElement)sender).ContextMenu.Items.GetItemAt(5) as MenuItem).Visibility =
+                    (lbFiles.SelectedItem as ShortcutInfo).FileFullPath.ToLower().EndsWith(".exe") ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
     }
 }
