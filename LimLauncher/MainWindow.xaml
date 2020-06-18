@@ -9,7 +9,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
         xmlns:tb="http://www.hardcodet.net/taskbar" UseLayoutRounding="True"
-        Closing="MetroWindow_Closing" StateChanged="MetroWindow_StateChanged"
+        Closing="MetroWindow_Closing" StateChanged="MetroWindow_StateChanged" WindowStyle="ToolWindow"
         mc:Ignorable="d" Style="{StaticResource MetroWindow}" Loaded="MetroWindow_Loaded"
         EnableDWMDropShadow="True" ShowMaxRestoreButton="False" ShowMinButton="True"  ShowIconOnTitleBar="False"
         x:Name="MetroWindow"
