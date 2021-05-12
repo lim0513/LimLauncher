@@ -25,17 +25,46 @@ namespace LimLauncher
     public partial class MainWindow
     {
         private string JsonFile => System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "filelist.json");
-        public ObservableCollection<GroupInfo> Groups { get; set; }
+        public ObservableCollection<GroupInfo> Groups { get; set; } = new ObservableCollection<GroupInfo>();
         private string OldCellValue;
+
+
+        private void LoadInfos()
+        {
+            var groups = SqliteHelper.Instance.ExecuteQuery<GroupInfo>("Select * from GroupInfo");
+            foreach (var Group in groups)
+            {
+                Group.LoadShortcuts();
+                Groups.Add(Group);
+            }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
             if (System.IO.File.Exists(JsonFile))
             {
-                Groups = Newtonsoft.Json.JsonConvert.DeserializeObject<ObservableCollection<GroupInfo>>(System.IO.File.ReadAllText(JsonFile));
+                var groups = Newtonsoft.Json.JsonConvert.DeserializeObject<ObservableCollection<GroupInfo>>(System.IO.File.ReadAllText(JsonFile));
+
+                foreach (var GroupInfo in groups)
+                {
+                    string GroupID = Guid.NewGuid().ToString();
+                    GroupInfo.ID = GroupID;
+                    GroupInfo.AddNewGroupToDB();
+
+                    foreach (var ShortcutInfo in GroupInfo.ListShortcutInfo)
+                    {
+                        ShortcutInfo.GroupID = GroupID;
+                        ShortcutInfo.ID = Guid.NewGuid().ToString();
+                        ShortcutInfo.AddNewShortcutToDB();
+                    }
+                }
+                System.IO.File.Delete(JsonFile);
             }
-            else
+
+            LoadInfos();
+
+            if (Groups.Count == 0)
             {
                 Groups = new ObservableCollection<GroupInfo>();
                 AddNewGroup("默认分组");
@@ -74,15 +103,6 @@ namespace LimLauncher
             AddNewGroup();
         }
 
-        /// <summary>
-        /// 保存
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
 
         /// <summary>
         /// 滚轮穿透
@@ -105,28 +125,6 @@ namespace LimLauncher
             if (string.IsNullOrEmpty(((TextBox)e.EditingElement).Text))
             {
                 ((TextBox)e.EditingElement).Text = OldCellValue;
-            }
-        }
-
-        /// <summary>
-        /// 分组名删除快捷键
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-
-            if (e.Key == Key.Delete && ((DataGrid)sender).SelectedItem != null && !((DataGrid)sender).IsEditing())
-            {
-                if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") != ModernMessageBoxLib.ModernMessageboxResult.Button1)
-                {
-                    e.Handled = true;
-                }
-                else
-                {
-                    if (Groups.Count == 1) FileView.SetFileList(AddNewGroup("默认分组"));
-                }
-
             }
         }
 
@@ -157,16 +155,30 @@ namespace LimLauncher
         {
             MyNotifyIcon.Dispose();
             SaveSettings();
-            Save();
         }
 
 
+        /// <summary>
+        /// 分组名删除快捷键
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Delete && ((DataGrid)sender).SelectedItem != null && !((DataGrid)sender).IsEditing())
+            {
+                e.Handled = true;
+            }
+        }
 
         private void MIDel_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBoxHelper.ShowYesNoMessage("确定要永久性的删除此分组吗？", "删除确认") == ModernMessageBoxLib.ModernMessageboxResult.Button1)
             {
-                Groups.Remove(((MenuItem)sender).DataContext as GroupInfo);
+                var group = ((MenuItem)sender).DataContext as GroupInfo;
+                group.RemoveGroupFromDB();
+                Groups.Remove(group);
                 if (Groups.Count == 0) FileView.SetFileList(AddNewGroup("默认分组"));
             }
 
@@ -183,6 +195,8 @@ namespace LimLauncher
         private GroupInfo AddNewGroup(string defualtGroupName = "新分组")
         {
             GroupInfo GroupNew = new GroupInfo() { GroupName = defualtGroupName };
+
+            GroupNew.AddNewGroupToDB();
             Groups.Add(GroupNew);
             dg_Groups.SelectedIndex = dg_Groups.Items.Count - 1;
             scv.ScrollToEnd();
@@ -192,11 +206,11 @@ namespace LimLauncher
         /// <summary>
         /// 保存分组
         /// </summary>
-        private void Save()
-        {
-            string strJson = Newtonsoft.Json.JsonConvert.SerializeObject(Groups);
-            System.IO.File.WriteAllText(JsonFile, strJson);
-        }
+        //private void Save()
+        //{
+        //    string strJson = Newtonsoft.Json.JsonConvert.SerializeObject(Groups);
+        //    System.IO.File.WriteAllText(JsonFile, strJson);
+        //}
 
         /// <summary>
         /// 保存配置

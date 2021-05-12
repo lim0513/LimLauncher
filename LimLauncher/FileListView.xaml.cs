@@ -96,11 +96,17 @@ namespace LimLauncher
                             fileReName = System.IO.Path.GetFileNameWithoutExtension(fileNameBase);
                         }
                         if (Files.Where(t => t.FileFullPath == filePath).Count() == 0)
-                            Files.Add(new ShortcutInfo()
+                        {
+                            var shortinfo = new ShortcutInfo()
                             {
+                                GroupID = GroupInfo.ID,
                                 FileFullPath = filePath,
                                 FileRename = fileReName,
-                            });
+                            };
+                            shortinfo.AddNewShortcutToDB();
+                            Files.Add(shortinfo);
+
+                        }
                     }
                 }
             }
@@ -145,7 +151,7 @@ namespace LimLauncher
                 {
                     if (e.Key == Key.Delete)
                     {
-                        Files.Remove(((ListBox)sender).SelectedValue as ShortcutInfo);
+                        e.Handled = true;
                     }
                     else if (e.Key == Key.F2)
                     {
@@ -172,6 +178,7 @@ namespace LimLauncher
                 foreach (ShortcutInfo File in lbFiles.SelectedItems)
                 {
                     toBeDelete.Add(File);
+                    File.RemoveShortcutFromDB();
                 }
 
                 toBeDelete.ForEach(File => Files.Remove(File));
@@ -238,6 +245,10 @@ namespace LimLauncher
             msg.ShowDialog();
             if (msg.Result == ModernMessageboxResult.Button1)
                 shortcutInfo.FileRename = msg.TextBoxText;
+
+            shortcutInfo.UpdateShortcutToDB();
+
+
         }
         #endregion
 

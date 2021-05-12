@@ -11,6 +11,10 @@ namespace LimLauncher.Entities
     [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class ShortcutInfo
     {
+
+        public string ID { get; set; } = Guid.NewGuid().ToString();
+
+        public string GroupID { get; set; }
         /// <summary>
         /// 文件完整路径
         /// </summary>
@@ -40,7 +44,7 @@ namespace LimLauncher.Entities
             }
         }
 
-        public string FileSize { get { return System.IO.Directory.Exists(FileFullPath) ? "" : Common.GetString(new System.IO.FileInfo(FileFullPath).Length); } }
+        public string FileSize { get { return System.IO.File.Exists(FileFullPath) ? Common.GetString(new System.IO.FileInfo(FileFullPath).Length) : ""; } }
 
         public string FileTypeDescription { get { return Common.GetFileTypeDescription(FileFullPath); } }
 
@@ -58,6 +62,40 @@ namespace LimLauncher.Entities
                 }
                 catch { }
             }).Start();
+        }
+
+        internal void AddNewShortcutToDB()
+        {
+            SqliteHelper.Instance.ExecuteNonQuery(
+                "insert into ShortcutInfo (GroupID,ID,FileFullPath,FileRename) values (@GroupID,@ID,@FileFullPath,@FileRename)",
+                new Dictionary<string, object>()
+                {
+                    {"GroupID",this.GroupID },
+                    {"ID",this.ID },
+                    {"FileFullPath",this.FileFullPath },
+                    {"FileRename",this.FileName},
+                });
+        }
+
+        internal void RemoveShortcutFromDB()
+        {
+            SqliteHelper.Instance.ExecuteNonQuery(
+                "Delete from ShortcutInfo where ID=@Id",
+                new Dictionary<string, object>()
+                {
+                    {"Id", this.ID}
+                });
+        }
+
+        internal void UpdateShortcutToDB()
+        {
+            SqliteHelper.Instance.ExecuteNonQuery(
+                "update ShortcutInfo set FileRename=@FileRename where ID=@Id",
+                new Dictionary<string, object>()
+                {
+                    {"FileRename", this.FileRename},
+                    {"Id", this.ID}
+                });
         }
     }
 }

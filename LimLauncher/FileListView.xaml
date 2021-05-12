@@ -1,109 +1,162 @@
-﻿<UserControl x:Class="LimLauncher.FileListView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LimLauncher"
-             mc:Ignorable="d" AllowDrop="True" DragOver="LbFiles_DragEnter" Drop="LbFiles_Drop"
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="LimLauncher.FileListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LimLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    AllowDrop="True"
+    DragOver="LbFiles_DragEnter"
+    Drop="LbFiles_Drop"
+    mc:Ignorable="d">
     <UserControl.Resources>
 
         <ContextMenu x:Key="FileContextMenu" x:Name="ContextMenu">
-            <MenuItem Header="打开(_O)" Click="MIOpenFile_Click" />
-            <MenuItem Header="重命名(_N)" Click="MIRename_Click" />
-            <MenuItem Header="删除(_D)" Click="MIDelFile_Click" />
+            <MenuItem Click="MIOpenFile_Click" Header="打开(_O)" />
+            <MenuItem Click="MIRename_Click" Header="重命名(_N)" />
+            <MenuItem Click="MIDelFile_Click" Header="删除(_D)" />
             <Separator />
-            <MenuItem Header="打开文件位置(_L)" Click="MIOpenFolder_Click" />
-            <MenuItem Header="管理员身份运行(_A)" Click="MIAdminRun_Click" />
+            <MenuItem Click="MIOpenFolder_Click" Header="打开文件位置(_L)" />
+            <MenuItem Click="MIAdminRun_Click" Header="管理员身份运行(_A)" />
         </ContextMenu>
 
-        <Style x:Key="ListBoxBigIcon" TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}" >
+        <Style
+            x:Key="ListBoxBigIcon"
+            BasedOn="{StaticResource MaterialDesignListBox}"
+            TargetType="{x:Type ListBox}">
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                    <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                         <EventSetter Event="ContextMenuOpening" Handler="ContextMenu_ContextMenuOpening" />
-                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Background" Value="Transparent" />
                         <Setter Property="ContentTemplate">
                             <Setter.Value>
                                 <DataTemplate>
-                                    <Grid Height="auto" Width="64" Margin="0">
+                                    <Grid
+                                        Width="64"
+                                        Height="auto"
+                                        Margin="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
-                                        <Image RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="40" Height="40" Margin="0,0,0,2"/>
-                                        <TextBlock Grid.Row="1" Text="{Binding FileRenameDisp}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="64" TextAlignment="Center"/>
+                                        <Image
+                                            Grid.Row="0"
+                                            Width="40"
+                                            Height="40"
+                                            Margin="0,0,0,2"
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            Source="{Binding FileIcon}"
+                                            Stretch="Uniform" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            MaxHeight="64"
+                                            Text="{Binding FileRenameDisp}"
+                                            TextAlignment="Center"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="Wrap" />
                                     </Grid>
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Margin" Value="1"/>
-                        <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}"/>
+                        <Setter Property="Margin" Value="1" />
+                        <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}" />
                     </Style>
                 </Setter.Value>
             </Setter>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="VerticalContentAlignment" Value="Top" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
-                    <ItemsPanelTemplate >
-                        <WrapPanel IsItemsHost="True"/>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style x:Key="ListBoxStretching" TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}" >
+        <Style
+            x:Key="ListBoxStretching"
+            BasedOn="{StaticResource MaterialDesignListBox}"
+            TargetType="{x:Type ListBox}">
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                    <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                         <EventSetter Event="ContextMenuOpening" Handler="ContextMenu_ContextMenuOpening" />
-                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Background" Value="Transparent" />
                         <Setter Property="ContentTemplate">
                             <Setter.Value>
                                 <DataTemplate>
-                                    <Grid Margin="0" Height="54">
+                                    <Grid Height="54" Margin="0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="195"/>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="195" />
                                         </Grid.ColumnDefinitions>
-                                        <Image RenderOptions.BitmapScalingMode="HighQuality" Grid.Column="0" Source="{Binding FileIcon}" Stretch="Uniform" Width="50" Height="40" Margin="0,0,2,0"/>
+                                        <Image
+                                            Grid.Column="0"
+                                            Width="50"
+                                            Height="40"
+                                            Margin="0,0,2,0"
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            Source="{Binding FileIcon}"
+                                            Stretch="Uniform" />
                                         <StackPanel Grid.Column="1">
                                             <StackPanel.Resources>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="LineHeight" Value="20"/>
+                                                    <Setter Property="LineHeight" Value="20" />
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <TextBlock Text="{Binding FileRenameDisp}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="36" TextAlignment="Left"/>
-                                            <TextBlock Text="{Binding FileTypeDescription}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
-                                            <TextBlock Text="{Binding FileSize}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" TextAlignment="Left"/>
+                                            <TextBlock
+                                                MaxHeight="36"
+                                                Text="{Binding FileRenameDisp}"
+                                                TextAlignment="Left"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Text="{Binding FileTypeDescription}"
+                                                TextAlignment="Left"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Text="{Binding FileSize}"
+                                                TextAlignment="Left"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="Wrap" />
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Margin" Value="1"/>
-                        <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}"/>
+                        <Setter Property="Margin" Value="1" />
+                        <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}" />
                     </Style>
                 </Setter.Value>
             </Setter>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="VerticalContentAlignment" Value="Top" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
-                    <ItemsPanelTemplate >
-                        <WrapPanel IsItemsHost="True"/>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
     </UserControl.Resources>
-    <ListBox x:Name="lbFiles" SelectionMode="Single" Margin="5" ItemsSource="{Binding Files}" Style="{StaticResource ListBoxBigIcon}" PreviewKeyDown="ListBox_PreviewKeyDown">
+    <ListBox
+        x:Name="lbFiles"
+        Margin="5"
+        ItemsSource="{Binding Files}"
+        PreviewKeyDown="ListBox_PreviewKeyDown"
+        SelectionMode="Single"
+        Style="{StaticResource ListBoxBigIcon}">
         <ListBox.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="大图标(_R)" Click="MIBigIcon_Click" />
-                <MenuItem Header="平铺(_S)" Click="MIStretching_Click" />
+                <MenuItem Click="MIBigIcon_Click" Header="大图标(_R)" />
+                <MenuItem Click="MIStretching_Click" Header="平铺(_S)" />
             </ContextMenu>
         </ListBox.ContextMenu>
     </ListBox>
