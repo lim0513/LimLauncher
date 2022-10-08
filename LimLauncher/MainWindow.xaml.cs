@@ -28,7 +28,7 @@ namespace LimLauncher
         public ObservableCollection<GroupInfo> Groups { get; set; } = new ObservableCollection<GroupInfo>();
         private string OldCellValue;
 
-
+        public bool MinInTaskbar { get; set; } = true;
         private void LoadInfos()
         {
             var groups = SqliteHelper.Instance.ExecuteQuery<GroupInfo>("Select * from GroupInfo");
@@ -73,7 +73,10 @@ namespace LimLauncher
             this.Width = Properties.Settings.Default.LastWidth;
             this.Top = Properties.Settings.Default.LastTop;
             this.Left = Properties.Settings.Default.LastLeft;
+            this.Topmost = Properties.Settings.Default.TopMost;
+            this.MinInTaskbar = Properties.Settings.Default.MinInTaskBar;
             tog_Topmost.IsChecked = Properties.Settings.Default.TopMost;
+
 
             this.DataContext = this;
         }
@@ -222,6 +225,8 @@ namespace LimLauncher
             Properties.Settings.Default.TopMost = this.Topmost;
             Properties.Settings.Default.LastTop = this.Top;
             Properties.Settings.Default.LastLeft = this.Left;
+            Properties.Settings.Default.TopMost = this.Topmost;
+            Properties.Settings.Default.MinInTaskBar = this.MinInTaskbar;
             Properties.Settings.Default.Save();
         }
 
@@ -246,7 +251,7 @@ namespace LimLauncher
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)
         {
-            this.ShowInTaskbar = this.WindowState != WindowState.Minimized;
+            this.ShowInTaskbar = this.WindowState != WindowState.Minimized || MinInTaskbar;
         }
     }
 }

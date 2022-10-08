@@ -104,6 +104,16 @@
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands ShowSeparators="False">
+            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" x:Name="tog_HideStatusBar" ToolTip="固定状态栏显示" IsChecked="{Binding MinInTaskbar}">
+                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <RotateTransform Angle="45" />
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon Kind="Pin" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
             <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" x:Name="tog_Topmost" ToolTip="置顶" IsChecked="{Binding Topmost,ElementName=MetroWindow,Mode=OneWayToSource}">
                 <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
                     <materialDesign:PackIcon.RenderTransform>
