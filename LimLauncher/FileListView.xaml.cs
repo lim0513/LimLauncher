@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,7 +74,6 @@ namespace LimLauncher
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        [Obsolete]
         private void LbFiles_Drop(object sender, DragEventArgs e)
         {
             try
@@ -87,11 +87,10 @@ namespace LimLauncher
                         if (System.IO.Path.GetExtension(filePath) == ".lnk")
                         {
                             IShellLink vShellLink = (IShellLink)new ShellLink();
-                            UCOMIPersistFile vPersistFile = vShellLink as UCOMIPersistFile;
+                            IPersistFile vPersistFile = vShellLink as IPersistFile;
                             vPersistFile.Load(filePath, 0);
                             StringBuilder vStringBuilder = new StringBuilder(260);
-                            WIN32_FIND_DATA vWIN32_FIND_DATA;
-                            vShellLink.GetPath(vStringBuilder, vStringBuilder.Capacity, out vWIN32_FIND_DATA, SLGP_FLAGS.SLGP_RAWPATH);
+                            vShellLink.GetPath(vStringBuilder, vStringBuilder.Capacity, out WIN32_FIND_DATA vWIN32_FIND_DATA, SLGP_FLAGS.SLGP_RAWPATH);
                             filePath = vStringBuilder.ToString();
                             fileReName = System.IO.Path.GetFileNameWithoutExtension(fileNameBase);
                         }
@@ -240,8 +239,8 @@ namespace LimLauncher
             {
                 TextBoxText = shortcutInfo.FileRenameDisp,
                 TextBoxVisibility = Visibility.Visible,
+                Owner = MessageBoxHelper.GlobalParentWindow
             };
-            msg.Owner = MessageBoxHelper.GlobalParentWindow;
             msg.ShowDialog();
             if (msg.Result == ModernMessageboxResult.Button1)
                 shortcutInfo.FileRename = msg.TextBoxText;
@@ -274,13 +273,14 @@ namespace LimLauncher
         {
             foreach (ShortcutInfo File in lbFiles.SelectedItems)
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Environment.CurrentDirectory;
-                startInfo.Verb = "runas";
-                startInfo.UseShellExecute = true;
-                //设置启动动作,确保以管理员身份运行
-                startInfo.FileName = File.FileFullPath;
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    Verb = "runas",
+                    //设置启动动作,确保以管理员身份运行
+                    FileName = File.FileFullPath
+                };
                 try
                 {
                     System.Diagnostics.Process.Start(startInfo);
